@@ -1,0 +1,24 @@
+version: '3'
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+      - 50000:50000
+    environment:
+      - JENKINS_URL=http://103.75.196.148:8080/
+      - JENKINS_ADMIN_ID=adminjnk
+      - JENKINS_ADMIN_PASSWORD=password123
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - jenkins_network
+
+volumes:
+  jenkins_home:
+
+networks:
+  jenkins_network:
+    driver: bridge
