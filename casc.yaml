@@ -20,3 +20,5 @@ security:
 unclassified:
   location:
     url: ${JENKINS_URL}
+jobs:
+  - file: /usr/local/testjob.groovy
