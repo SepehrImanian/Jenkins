@@ -43,6 +43,5 @@ COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
 
 # copy groovy files
 COPY testjob.groovy /usr/local/testjob.groovy
-COPY external_job.groovy /usr/local/external_job.groovy
 
 RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
