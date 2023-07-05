@@ -1,23 +1,24 @@
 version: '3'
 services:
-  jenkins:
+  jenkins-master:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: jenkins-master
     ports:
       - 8080:8080
       - 50000:50000
     environment:
-      - JENKINS_URL=http://103.75.196.148:8080/
-      - JENKINS_ADMIN_ID=adminjnk
-      - JENKINS_ADMIN_PASSWORD=password123
+      JENKINS_URL: "http://103.75.196.148:8080/"
+      JENKINS_ADMIN_ID: "admin"
+      JENKINS_ADMIN_PASSWORD: "password123"
     volumes:
-      - jenkins_home:/var/jenkins_home
+      - jenkins_home_master:/var/jenkins_home
     networks:
       - jenkins_network
-
+  
 volumes:
-  jenkins_home:
+  jenkins_home_master:
 
 networks:
   jenkins_network:

@@ -1,15 +1,14 @@
-job('seed_job') {
-  scm {
-    git {
-      remote {
-        url('https://github.com/SepehrImanian/Jenkins.git')
-      }
-      branch('main')
+pipeline {
+    agent any
+    stages {
+        stage("Deploy") {
+            steps {
+                input(
+                    message: "Ready to continue?",
+                    ok: "Yes"
+                )
+                echo "Deploy app test"
+            }
+        }
     }
-  }
-  steps {
-    dsl {
-      external('external_job.groovy')
-    }
-  }
 }
