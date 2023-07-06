@@ -9,13 +9,9 @@ RUN apt-get update && apt install -y apt-transport-https \
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
 RUN apt update && \
-	apt install -y docker-ce-cli
+	apt-get install -y docker-ce-cli
 
-# Install ansible
-RUN apt install -y python3-pip
-RUN pip install wheel ansible
-
-# Install kubernetes client
+# Install kubectl
 RUN curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
   chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
 
@@ -31,17 +27,18 @@ RUN apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(ls
 RUN apt update && \
 	apt install -y terraform
 
+# Install ansible
+RUN apt install -y python3-pip
+RUN pip install wheel ansible
+
 # Remove Cache
 RUN apt clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 USER jenkins
 
+# Install Jenkins plugins
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 ENV CASC_JENKINS_CONFIG /var/jenkins_home/casc.yaml
 COPY --chown=jenkins:jenkins casc.yaml /var/jenkins_home/casc.yaml
 COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
-
-# copy groovy files
-COPY testjob.groovy /usr/local/testjob.groovy
-
 RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
