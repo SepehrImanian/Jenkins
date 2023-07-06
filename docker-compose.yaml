@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: jenkins-master
+    privileged: true
     ports:
       - 8080:8080
       - 50000:50000
@@ -12,31 +13,67 @@ services:
       JENKINS_URL: "http://103.75.196.148:8080/"
       JENKINS_ADMIN_ID: "admin"
       JENKINS_ADMIN_PASSWORD: "password123"
-      DOCKER_HOST: "tcp://docker:2376"
-      DOCKER_TLS_VERIFY: "1"
     volumes:
-      - jenkins_home_data:/var/jenkins_home
-      - docker_certs_client:/var/jenkins_home/.docker
+      - jenkins_home_data_master:/var/jenkins_home
     networks:
       - jenkins_network
+    logging:
+        driver: json-file
+        options:
+            max-file: '3'
+            max-size: 100m
 
-  docker:
-    image: docker:dind
-    restart: unless-stopped
+  jenkins-slave01:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jenkins-slave01
     privileged: true
+    environment:
+        - JAVA_OPTS="-Dfile.encoding=UTF-8"
     volumes:
-      - docker_data:/var/lib/docker
-      - docker_certs:/certs
-      - docker_certs_client:/certs/client
-      - jenkins_home_data:/var/jenkins_home
-    expose:
-      - "2376"
+        - jenkins_home_data_salve01:/var/jenkins_home
+    networks:
+        - jenkins_network
+    healthcheck:
+        test: ["CMD-SHELL", "nc -v -w 10 -z 127.0.0.1 22"]
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    logging:
+        driver: json-file
+        options:
+            max-file: '3'
+            max-size: 100m
+
+  jenkins-slave02:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jenkins-slave02
+    privileged: true
+    environment:
+        - JAVA_OPTS="-Dfile.encoding=UTF-8"
+    volumes:
+        - jenkins_home_data_salve02:/var/jenkins_home
+    networks:
+        - jenkins_network
+    healthcheck:
+        test: ["CMD-SHELL", "nc -v -w 10 -z 127.0.0.1 22"]
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    logging:
+        driver: json-file
+        options:
+            max-file: '3'
+            max-size: 100m
 
 volumes:
-  jenkins_home_data:
-  docker_data:
-  docker_certs:
-  docker_certs_client:
+  jenkins_home_data_master:
+  jenkins_home_data_salve01:
+  jenkins_home_data_salve02:
+
 networks:
   jenkins_network:
     driver: bridge

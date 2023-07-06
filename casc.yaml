@@ -1,4 +1,45 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          description: "Slave SSH User"
+          id: "SlaveSSHAuth"
+          scope: GLOBAL
+          username: "root"
+          password: "root"
 jenkins:
+  numExecutors: 2
+  slaveAgentPort: 50000
+  nodes:
+    - permanent:
+        name: "slave01"
+        numExecutors: 1
+        remoteFS: "/var/jenkins_home"
+        retentionStrategy: "always"
+        launcher:
+          ssh:
+            credentialsId: "SlaveSSHAuth"
+            host: "slave01"
+            launchTimeoutSeconds: 210
+            maxNumRetries: 10
+            port: 22
+            retryWaitTime: 15
+            sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
+    - permanent:
+        name: "slave02"
+        numExecutors: 1
+        remoteFS: "/var/jenkins_home"
+        retentionStrategy: "always"
+        launcher:
+          ssh:
+            credentialsId: "SlaveSSHAuth"
+            host: "slave02"
+            launchTimeoutSeconds: 210
+            maxNumRetries: 10
+            port: 22
+            retryWaitTime: 15
+            sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
   securityRealm:
     local:
       allowsSignup: false
@@ -20,5 +61,3 @@ security:
 unclassified:
   location:
     url: ${JENKINS_URL}
-#jobs:
-#  - file: /usr/local/testjob.groovy

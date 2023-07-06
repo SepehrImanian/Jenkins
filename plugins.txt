@@ -6,6 +6,9 @@ antisamy-markup-formatter:latest
 terraform:latest
 kubernetes:latest
 kubernetes-cli:latest
+kubernetes-client-api:latest
+kubernetes-credentials:latest
+nexus-jenkins-plugin:latest
 docker-plugin:latest
 docker-commons:latest
 docker-workflow:latest
