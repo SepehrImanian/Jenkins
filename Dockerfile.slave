@@ -44,13 +44,8 @@ RUN apt clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg
 
 # Setup SSH
 ENV ROOT_PASSWORD=root
-
-USER jenkins
-
-# Install Jenkins plugins
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
-ENV JAVA_HOME /opt/java/openjdk/bin/java
-ENV CASC_JENKINS_CONFIG /var/jenkins_home/casc.yaml
-COPY --chown=jenkins:jenkins casc.yaml /var/jenkins_home/casc.yaml
-COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN ["chmod", "+x", "/usr/local/bin/entrypoint.sh"]
+EXPOSE 22
+CMD ["entrypoint.sh"]

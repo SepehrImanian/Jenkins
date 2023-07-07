@@ -1,3 +1,4 @@
+cloudbees-disk-usage-simple:latest
 configuration-as-code:latest
 workflow-aggregator:latest
 job-dsl:latest

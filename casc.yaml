@@ -13,28 +13,30 @@ jenkins:
   slaveAgentPort: 50000
   nodes:
     - permanent:
-        name: "slave01"
+        name: "jenkins-slave01"
         numExecutors: 1
         remoteFS: "/var/jenkins_home"
         retentionStrategy: "always"
         launcher:
           ssh:
             credentialsId: "SlaveSSHAuth"
-            host: "slave01"
+            host: "jenkins-slave01"
+            javaPath: "/opt/java/openjdk/bin/java"
             launchTimeoutSeconds: 210
             maxNumRetries: 10
             port: 22
             retryWaitTime: 15
             sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
     - permanent:
-        name: "slave02"
+        name: "jenkins-slave02"
         numExecutors: 1
         remoteFS: "/var/jenkins_home"
         retentionStrategy: "always"
         launcher:
           ssh:
             credentialsId: "SlaveSSHAuth"
-            host: "slave02"
+            host: "jenkins-slave02"
+            javaPath: "/opt/java/openjdk/bin/java"
             launchTimeoutSeconds: 210
             maxNumRetries: 10
             port: 22

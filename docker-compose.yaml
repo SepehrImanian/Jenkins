@@ -13,10 +13,16 @@ services:
       JENKINS_URL: "http://103.75.196.148:8080/"
       JENKINS_ADMIN_ID: "admin"
       JENKINS_ADMIN_PASSWORD: "password123"
+    configs:
+      - source: jenkins-cfg
+        target: /var/jenkins_home/casc.yaml
     volumes:
       - jenkins_home_data_master:/var/jenkins_home
     networks:
       - jenkins_network
+    depends_on:
+      - jenkins-slave01
+      - jenkins-slave02
     logging:
         driver: json-file
         options:
@@ -26,7 +32,7 @@ services:
   jenkins-slave01:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.slave
     container_name: jenkins-slave01
     privileged: true
     environment:
@@ -49,7 +55,7 @@ services:
   jenkins-slave02:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.slave
     container_name: jenkins-slave02
     privileged: true
     environment:
@@ -73,6 +79,10 @@ volumes:
   jenkins_home_data_master:
   jenkins_home_data_salve01:
   jenkins_home_data_salve02:
+
+configs:
+    jenkins-cfg:
+        file: ./casc.yaml
 
 networks:
   jenkins_network:
