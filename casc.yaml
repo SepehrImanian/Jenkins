@@ -9,7 +9,11 @@ credentials:
           username: "root"
           password: "root"
 jenkins:
-  numExecutors: 2
+  agentProtocols:
+    - "JNLP4-connect"
+    - "Ping"
+    - "SSH"
+  numExecutors: 0
   slaveAgentPort: 50000
   nodes:
     - permanent:
