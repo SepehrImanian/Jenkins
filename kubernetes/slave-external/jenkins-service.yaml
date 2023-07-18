@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-slave-external
+  namespace: jenkins
+spec:
+  ports:
+    - name: ssh
+      port: 22
+      targetPort: 22

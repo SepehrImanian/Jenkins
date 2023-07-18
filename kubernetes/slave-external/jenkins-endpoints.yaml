@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: jenkins-slave-external
+  namespace: jenkins
+subsets:
+  - addresses:
+      - ip: 103.75.196.148
+    ports:
+      - port: 22
