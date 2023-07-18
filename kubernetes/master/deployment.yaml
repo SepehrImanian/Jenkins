@@ -20,6 +20,9 @@ spec:
       containers:
         - name: jenkins
           image: sepehrimanian/jenkins-master:v1.0.0
+          envFrom:
+            - secretRef:
+                name: jenkins-credentials
           resources:
             limits:
               memory: "2Gi"

@@ -13,8 +13,8 @@ data:
               description: "Slave SSH User"
               id: "SlaveSSHAuth"
               scope: GLOBAL
-              username: "root"
-              password: "root"
+              username: ${SSH_USERNAME}
+              password: ${SSH_PASSWORD}
     jenkins:
       agentProtocols:
         - "JNLP4-connect"
@@ -42,8 +42,8 @@ data:
         local:
           allowsSignup: false
           users:
-          - id: "admin"
-            password: "password123"
+          - id: ${JENKINS_ADMIN_ID}
+            password: ${JENKINS_ADMIN_PASSWORD}
       authorizationStrategy:
         globalMatrix:
           permissions:
@@ -58,4 +58,4 @@ data:
             strategy: triggeringUsersAuthorizationStrategy
     unclassified:
       location:
-        url: http://localhost:8080/
+        url: ${JENKINS_URL}
