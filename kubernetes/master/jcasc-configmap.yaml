@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: jenkins-config
+  name: jenkins-jcasc-config
   namespace: jenkins
 data:
   casc.yaml: |

@@ -51,12 +51,12 @@ spec:
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
-            - name: config-volume
+            - name: jcasc-config-volume
               mountPath: /var/jenkins_home/casc.yaml
       volumes:
-        - name: config-volume
+        - name: jcasc-config-volume
           configMap:
-            name: jenkins-config
+            name: jenkins-jcasc-config
         - name: jenkins-data
           persistentVolumeClaim:
               claimName: jenkins-master
