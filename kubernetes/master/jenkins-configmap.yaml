@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-config
+  namespace: jenkins
+data:
+  casc.yaml: |
+    credentials:
+      system:
+        domainCredentials:
+        - credentials:
+          - usernamePassword:
+              description: "Slave SSH User"
+              id: "SlaveSSHAuth"
+              scope: GLOBAL
+              username: "root"
+              password: "root"
+    jenkins:
+      agentProtocols:
+        - "JNLP4-connect"
+        - "Ping"
+        - "SSH"
+      numExecutors: 0
+      slaveAgentPort: 50000
+      nodes:
+        - permanent:
+            name: "jenkins-slave01"
+            numExecutors: 1
+            remoteFS: "/var/jenkins_home"
+            retentionStrategy: "always"
+            launcher:
+              ssh:
+                credentialsId: "SlaveSSHAuth"
+                host: "jenkins-slave01"
+                javaPath: "/opt/java/openjdk/bin/java"
+                launchTimeoutSeconds: 210
+                maxNumRetries: 10
+                port: 22
+                retryWaitTime: 15
+                sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
+      securityRealm:
+        local:
+          allowsSignup: false
+          users:
+          - id: "admin"
+            password: "password123"
+      authorizationStrategy:
+        globalMatrix:
+          permissions:
+            - "Overall/Administer:admin"
+            - "Overall/Read:authenticated"
+      remotingSecurity:
+        enabled: true
+    security:
+      queueItemAuthenticator:
+        authenticators:
+        - global:
+            strategy: triggeringUsersAuthorizationStrategy
+    unclassified:
+      location:
+        url: http://localhost:8080/
